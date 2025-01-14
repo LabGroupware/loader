@@ -1,0 +1,20 @@
+kind: MemoryValue
+data:
+  - key: "slaveLists"
+    value:
+      - id: "slave1"
+        uuid: {{ uuidv4 }}
+        address: "13.58.14.72"
+        port: 50051
+      - id: "slave2"
+        uuid: {{ uuidv4 }}
+        address: "3.143.73.213"
+        port: 50051
+      - id: "slave3"
+        uuid: {{ uuidv4 }}
+        address: "3.16.103.195"
+        port: 50051
+      - id: "slave4"
+        uuid: {{ uuidv4 }}
+        address: "3.136.44.140"
+        port: 50051

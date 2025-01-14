@@ -1,0 +1,21 @@
+version: "v1"
+type: slave
+env: "production"
+slave_setting:
+  port: 50051
+  certificate:
+    enabled: true
+    slave_cert: "certs/slave.crt"
+    slave_key: "certs/slave.key"
+encrypts: []
+logging:
+  output:
+    - type: "file"
+      filename: "logs/app.log"
+      format: "text"
+      level: "warn"
+clock:
+  format: "2006-01-02T15:04:05Z"
+language:
+  default: "en"
+override: []
