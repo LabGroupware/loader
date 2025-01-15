@@ -13,9 +13,9 @@ step:
           file: "slave/memory.yaml"
           values: []
           thread_only_values: []
-    - id: "main"
+    - id: "sc20"
       type: file
-      mkdir: false
+      mkdir: true
       file: "sc20/flow.yaml"
       values: []
       thread_only_values: []

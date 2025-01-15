@@ -30,9 +30,9 @@ step:
           mkdir: false
           values: []
           thread_only_values: []
-    - id: "main"
+    - id: "sc6"
       type: file
-      mkdir: false
+      mkdir: true
       file: "sc6/flow.yaml"
       values: []
       thread_only_values: []
