@@ -1,0 +1,263 @@
+kind: Flow
+step:
+  concurrency: -1
+  flows:
+    - id: "slaveSetup"
+      type: flow
+      mkdir: false
+      concurrency: 0
+      flows:
+        - id: "slaveMemory"
+          type: file
+          mkdir: false
+          file: "slave/memory.yaml"
+          values: []
+          thread_only_values: []
+        - id: "slaveConnect"
+          type: file
+          mkdir: false
+          file: "slave/connect.yaml"
+          values: []
+          thread_only_values: []
+    - id: "main"
+      type: flow
+      mkdir: false
+      concurrency: -1
+      depends_on:
+        - flow: slaveConnect
+          event: slaveConnect:connected
+      flows:
+        - id: "store"
+          type: flow
+          mkdir: false
+          concurrency: -1
+          flows:
+            - id: "usersStore"
+              type: file
+              mkdir: false
+              file: "store/create_user_profile.yaml"
+              values: []
+              thread_only_values: []
+            - id: "fileObjectsStore"
+              type: file
+              mkdir: false
+              file: "store/create_file_object.yaml"
+              values: []
+              thread_only_values: []
+            - id: "organizationStore"
+              type: file
+              mkdir: false
+              file: "store/create_organization.yaml"
+              values: []
+              thread_only_values: []
+              depends_on:
+                - flow: waitCreateUser
+                  event: sys:terminated
+            - id: "taskStore"
+              type: file
+              mkdir: false
+              file: "store/create_task.yaml"
+              values: []
+              thread_only_values: []
+              depends_on:
+                - flow: waitCreateTeam
+                  event: sys:terminated
+                - flow: waitCreateFileObject
+                  event: sys:terminated
+        - id: "import"
+          type: flow
+          mkdir: false
+          concurrency: -1
+          flows:
+            - id: "userImport"
+              type: file
+              file: "sc1/store_import.yaml"
+              mkdir: false
+              values: []
+              thread_only_values: []
+              depends_on:
+                - flow: usersStore
+                  event: sys:terminated
+            - id: "fileObjectImport"
+              type: file
+              file: "sc5/store_import.yaml"
+              mkdir: false
+              values: []
+              thread_only_values: []
+              depends_on:
+                - flow: fileObjectsStore
+                  event: sys:terminated
+            - id: "organizationImport"
+              type: file
+              file: "sc3/store_import.yaml"
+              mkdir: false
+              values: []
+              thread_only_values: []
+              depends_on:
+                - flow: organizationStore
+                  event: sys:terminated
+            - id: "taskImport"
+              type: file
+              file: "sc8/store_import.yaml"
+              mkdir: false
+              values: []
+              thread_only_values: []
+              depends_on:
+                - flow: taskStore
+                  event: sys:terminated
+        - id: "createUser"
+          type: flow
+          mkdir: false
+          depends_on:
+            - flow: userImport
+              event: sys:terminated
+          concurrency: 0
+          flows:
+            - id: "createUserRequest" 
+              type: slaveCmd
+              mkdir: false
+              thread_only_values:
+                - key: "Interval"
+                  value: "100ms"
+              executors:
+                {{- range slice .Values.slaveLists 0 .Values.SlaveCount }}
+                - slave_id: "{{ .id }}"
+                  output:
+                    enabled: false
+                  inherit_values: true
+                  additional_values: []
+                  additional_thread_only_values: []
+                {{- end }}
+              file: "sc1/request.yaml"
+            - id: "waitCreateUser"
+              type: file
+              file: "case/wait.yaml"
+              mkdir: true
+              values: []
+              thread_only_values:
+                - key: "Endpoint"
+                  value: "/user-profiles"
+                - key: "Interval"
+                  value: "5s"
+                - key: "RecordCount"
+                  value: {{ mul .Values.SlaveCount (mul .Values.ThreadPerSlaveCount .Values.RequestPerSlaveCount) }}
+        - id: "createFileObject"
+          type: flow
+          mkdir: false
+          depends_on:
+            - flow: fileObjectImport
+              event: sys:terminated
+          concurrency: 0
+          flows:
+            - id: "createFileObjectRequest"
+              type: slaveCmd
+              mkdir: false
+              thread_only_values:
+                - key: "Interval"
+                  value: "100ms"
+              executors:
+                {{- range slice .Values.slaveLists 0 .Values.SlaveCount }}
+                - slave_id: "{{ .id }}"
+                  output:
+                    enabled: false
+                  inherit_values: true
+                  additional_values: []
+                  additional_thread_only_values: []
+                {{- end }}
+              file: "sc5/request.yaml"
+            - id: "waitCreateFileObject"
+              type: file
+              file: "case/wait.yaml"
+              mkdir: true
+              values: []
+              thread_only_values:
+                - key: "Endpoint"
+                  value: "/file-objects"
+                - key: "Interval"
+                  value: "5s"
+                - key: "RecordCount"
+                  value: {{ mul .Values.SlaveCount (mul .Values.ThreadPerSlaveCount .Values.RequestPerSlaveCount) }}
+        - id: "createOrganization"
+          type: flow
+          mkdir: false
+          depends_on:
+            - flow: organizationImport
+              event: sys:terminated
+          concurrency: 0
+          flows:
+            - id: "createOrganizationRequest"
+              type: slaveCmd
+              mkdir: false
+              thread_only_values:
+                - key: "Interval"
+                  value: "100ms"
+              executors:
+                {{- range slice .Values.slaveLists 0 .Values.SlaveCount }}
+                - slave_id: "{{ .id }}"
+                  output:
+                    enabled: false
+                  inherit_values: true
+                  additional_values: []
+                  additional_thread_only_values: []
+                {{- end }}
+              file: "sc3/request.yaml"
+            - id: "waitCreateOrganization"
+              type: file
+              file: "case/wait.yaml"
+              mkdir: true
+              values: []
+              thread_only_values:
+                - key: "Endpoint"
+                  value: "/organizations"
+                - key: "Interval"
+                  value: "5s"
+                - key: "RecordCount"
+                  value: {{ mul .Values.SlaveCount (mul .Values.ThreadPerSlaveCount .Values.RequestPerSlaveCount) }}
+            - id: "waitCreateTeam"
+              type: file
+              file: "case/wait.yaml"
+              mkdir: true
+              values: []
+              thread_only_values:
+                - key: "Endpoint"
+                  value: "/teams"
+                - key: "Interval"
+                  value: "5s"
+                - key: "RecordCount"
+                  value: {{ mul .Values.SlaveCount (mul .Values.ThreadPerSlaveCount .Values.RequestPerSlaveCount) }}
+        - id: "createTask"
+          type: flow
+          mkdir: false
+          depends_on:
+            - flow: taskImport
+              event: sys:terminated
+          concurrency: 0
+          flows:
+            - id: "createTaskRequest"
+              type: slaveCmd
+              mkdir: false
+              thread_only_values:
+                - key: "Interval"
+                  value: "100ms"
+              executors:
+                {{- range slice .Values.slaveLists 0 .Values.SlaveCount }}
+                - slave_id: "{{ .id }}"
+                  output:
+                    enabled: false
+                  inherit_values: true
+                  additional_values: []
+                  additional_thread_only_values: []
+                {{- end }}
+              file: "sc8/request.yaml"
+            - id: "waitCreateTask"
+              type: file
+              file: "case/wait.yaml"
+              mkdir: true
+              values: []
+              thread_only_values:
+                - key: "Endpoint"
+                  value: "/tasks"
+                - key: "Interval"
+                  value: "5s"
+                - key: "RecordCount"
+                  value: {{ mul .Values.SlaveCount (mul .Values.ThreadPerSlaveCount .Values.RequestPerSlaveCount) }}

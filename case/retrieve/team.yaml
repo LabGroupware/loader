@@ -1,0 +1,16 @@
+kind: Flow
+step:
+  concurrency: -1
+  flows:
+    - id: "retrieve_teams"
+      type: file
+      file: "retrieve/retriever/team.yaml"
+      thread_only_values:
+        - key: "RecordCount"
+          value: "{{ mul .Values.InitSlaveCount .Values.InitThreadPerSlaveCount .Values.InitRequestPerSlaveCount }}"
+    - id: "import_teams"
+      type: file
+      file: "retrieve/importer/team.yaml"
+      depends_on:
+        - flow: "retrieve_teams"
+          event: sys:terminated
