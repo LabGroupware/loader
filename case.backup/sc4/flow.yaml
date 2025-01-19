@@ -33,7 +33,7 @@ step:
         - key: "Interval"
           value: "100ms"
       executors:
-        {{- range slice .Values.slaveLists 0 .Values.SlaveCount }}
+        {{- range slice .Values.SlaveLists 0 .Values.SlaveCount }}
         - slave_id: "{{ .id }}"
           output:
             enabled: true

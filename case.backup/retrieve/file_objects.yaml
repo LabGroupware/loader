@@ -11,7 +11,7 @@ request:
   method: GET
   query_param:
     pagination: "offset"
-    limit: {{ .Values.TreadRequestPerSlaveCount }}
+    limit: {{ .Values.ThreadRequestPerSlaveCount }}
     offset: {{ mul .Dynamic.LoopCount .ThreadValues.RequestPerSlaveCount }}
   path_variables: {}
   body_type: "json"

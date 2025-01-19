@@ -1,0 +1,68 @@
+kind: Flow
+step:
+  concurrency: -1
+  flows:
+    - id: "import"
+      type: file
+      mkdir: false
+      file: {{ printf "scenario/%s/store_import.yaml" .Values.Case }}
+    - id: "slaveSetup"
+      type: flow
+      mkdir: false
+      concurrency: 0
+      flows:
+        - id: "slaveMemory"
+          type: file
+          mkdir: false
+          file: "slave/memory.yaml"
+          values: []
+          thread_only_values: []
+        - id: "slaveConnect"
+          type: file
+          mkdir: false
+          file: "slave/connect.yaml"
+          values: []
+          thread_only_values:
+            - key: "SlaveCount"
+              value: {{ .Values.SlaveCount }}
+    - id: "main"
+      type: flow
+      mkdir: false
+      concurrency: -1
+      depends_on:
+        - flow: slaveConnect
+          event: slaveConnect:connected
+        - flow: import
+          event: sys:terminated
+      flows:
+        - id: "metrics"
+          type: file
+          mkdir: true
+          file: "metrics/main.yaml"
+          values:
+            - key: "MetricsInterval"
+              value: "5s"
+            - key: "MetricsBreakTime"
+              value: "10m"
+          thread_only_values: []
+        - id: "request"
+          type: slaveCmd
+          mkdir: true
+          thread_only_values:
+            - key: "Interval"
+              value: "100ms"
+            - key: "ThreadPerSlaveCount"
+              value: {{ .Values.ThreadPerSlaveCount }}
+            - key: "RequestPerSlaveCount"
+              value: {{ .Values.RequestPerSlaveCount }}
+          executors:
+            {{- range slice .Values.SlaveLists 0 .Values.SlaveCount }}
+            - slave_id: "{{ .id }}"
+              output:
+                enabled: true
+                root_path: "{{ .id }}"
+              inherit_values: true
+              additional_values: []
+              additional_thread_only_values: []
+            {{- end }}
+          file: {{ printf "scenario/%s/request.yaml" .ThreadValues.Case }}

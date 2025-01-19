@@ -27,8 +27,8 @@ requests:
       description: "{{ .description }}"
       teamId: "{{ .teamId }}"
       chargeUserId: "{{ .chargeUserId }}"
-      attachmentsIds:
-      {{- range .attachmentsIds }}
+      attachmentIds:
+      {{- range .attachmentIds }}
         - "{{ . }}"
       {{- end }}
       startDatetime: "{{ .startDatetime }}"

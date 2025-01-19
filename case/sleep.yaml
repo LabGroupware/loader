@@ -1,7 +1,0 @@
-kind: StoreValue
-sleep:
-  enabled: true
-  values:
-    - duration: {{ .ThreadValues.SleepDuration }}
-      after: init
-data: [] # dummy data

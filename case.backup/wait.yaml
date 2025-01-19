@@ -5,7 +5,7 @@ auth:
   auth_id: authForWeb
 requests:
   - target_id: "apiServer"
-    endpoint: {{ $.TreadValues.Endpoint }}
+    endpoint: {{ $.ThreadValues.Endpoint }}
     method: GET
     interval: {{ $.ThreadValues.Interval }}
     await_prev_response: true

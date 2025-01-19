@@ -15,6 +15,8 @@ request:
     offset: 0
     with:
       - "userPreference"
+    sort_field: create
+    sort_order: desc
   path_variables: {}
   body_type: "json"
   body: {}
@@ -22,7 +24,7 @@ request:
   data: []
   store_data:
     - bucket_id: "bucketForApp"
-      store_key: "retrievedUsersWithPreferenceLists"
+      store_key: "retrievedUsersListsWithPreference"
       extractor:
         type: "jmesPath"
         jmes_path: "data.listData"

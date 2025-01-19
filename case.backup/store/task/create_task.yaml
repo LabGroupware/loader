@@ -1,4 +1,4 @@
-{{- $datetimeFormat := "2006-01-02T15:04:05Z" -}}
+{{- $datetimeFormat := "2006-01-02T15:04:05" -}}
 {{- $currentDatetime := now -}}
 {{- $iter := 0 -}}
 kind: StoreValue
@@ -23,7 +23,7 @@ data:
             description: {{ randAlpha $randOnDescription }}
             teamId: {{ (index $teamData $index).teamId }}
             chargeUserId: {{ (index $userData $index).userProfile.userId }}
-            attachmentsIds:
+            attachmentIds:
               - {{ (index $fileObjectData $index).fileObjectId }}
             startDatetime: {{ $startDatetime | date $datetimeFormat }}
             dueDatetime: {{ $dueDatetime | date $datetimeFormat }}

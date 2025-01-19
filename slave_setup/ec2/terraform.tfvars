@@ -1,6 +1,6 @@
 region           = "us-east-2"
 profile_name     = "terraform"
-bloader_version = "1.0.4" # without v prefix
+bloader_version = "1.0.6" # without v prefix
 tls_enabled      = true
 tls_period_hours = 8760
 ca_cert_file_path = "../../certs/ca.crt" # Attention: This is a relative path from the main.tf directory

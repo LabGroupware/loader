@@ -1,4 +1,9 @@
 kind: Flow
+sleep:
+  enabled: true
+  values:
+    - duration: {{ .ThreadValues.SleepDuration }}
+      after: init
 step:
   concurrency: -1
   flows:
@@ -7,7 +12,7 @@ step:
       file: "retrieve/retriever/organization.yaml"
       thread_only_values:
         - key: "RecordCount"
-          value: "{{ mul .Values.InitSlaveCount .Values.InitThreadPerSlaveCount .Values.InitRequestPerSlaveCount }}"
+          value: "{{ mul .ThreadValues.SlaveCount .ThreadValues.ThreadPerSlaveCount .ThreadValues.RequestPerSlaveCount }}"
     - id: "import_organizations"
       type: file
       file: "retrieve/importer/organization.yaml"

@@ -1,6 +1,6 @@
 kind: SlaveConnect
 slaves:
-{{- range slice .Values.slaveLists 0 .Values.SlaveCount }}
+{{- range slice .Values.SlaveLists 0 .Values.SlaveCount }}
   - id: "{{ .id }}"
     uri: "dns:{{ .address }}:{{ .port }}" # support schema https://github.com/grpc/grpc/blob/master/doc/naming.md
     certificate:

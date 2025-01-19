@@ -1,5 +1,9 @@
 ### Warmup Request
 
+``` sh
+bloader run -f warm.yaml -d "SlaveCount=4:i" -d "ThreadPerSlaveCount=10:i" -d "RequestPerSlaveCount=250:i" -d "LoadSlaveCount=4:i" -d "LoadThreadPerSlaveCount=25:i" -d "LoadRequestPerSlaveCount=3000:i"
+```
+
 ### Scenario
 
 | Scenario                     | Link                              |

@@ -13,6 +13,8 @@ request:
     pagination: "offset"
     limit: {{ .ThreadValues.RecordCount }}
     offset: 0
+    sort_field: create
+    sort_order: desc
   path_variables: {}
   body_type: "json"
   body: {}
