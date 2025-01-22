@@ -74,6 +74,10 @@ logging:
     - type: "stdout"
       format: "text"
       level: "warn"
+    - type: "file"
+      format: "text"
+      level: "info"
+      filename: "logs/master.log"
 clock:
   format: "2006-01-02T15:04:05Z"
 language:

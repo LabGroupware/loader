@@ -25,9 +25,15 @@ step:
           thread_only_values:
             - key: "SlaveCount"
               value: {{ .Values.SlaveCount }}
-    - id: "main"
+          actions:
+            - id: "disconnect"
+              type: "slaveConnect:disconnect"
+              on:
+                - event: "sys:terminated"
+                  flow: "request"
+    - id: {{ .Values.Case }}
       type: flow
-      mkdir: false
+      mkdir: true
       concurrency: -1
       depends_on:
         - flow: slaveConnect
@@ -46,23 +52,6 @@ step:
               value: "10m"
           thread_only_values: []
         - id: "request"
-          type: slaveCmd
+          type: file
           mkdir: true
-          thread_only_values:
-            - key: "Interval"
-              value: "100ms"
-            - key: "ThreadPerSlaveCount"
-              value: {{ .Values.ThreadPerSlaveCount }}
-            - key: "RequestPerSlaveCount"
-              value: {{ .Values.RequestPerSlaveCount }}
-          executors:
-            {{- range slice .Values.SlaveLists 0 .Values.SlaveCount }}
-            - slave_id: "{{ .id }}"
-              output:
-                enabled: true
-                root_path: "{{ .id }}"
-              inherit_values: true
-              additional_values: []
-              additional_thread_only_values: []
-            {{- end }}
-          file: {{ printf "scenario/%s/request.yaml" .ThreadValues.Case }}
+          file: "request.yaml"

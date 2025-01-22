@@ -4,7 +4,18 @@
 bloader run -f warm.yaml -d "SlaveCount=4:i" -d "ThreadPerSlaveCount=10:i" -d "RequestPerSlaveCount=250:i" -d "LoadSlaveCount=4:i" -d "LoadThreadPerSlaveCount=25:i" -d "LoadRequestPerSlaveCount=3000:i"
 ```
 
-### Scenario
+### Test Warm
+``` sh
+bloader run -f warm.yaml -d "SlaveCount=4:i" -d "ThreadPerSlaveCount=1:i" -d "RequestPerSlaveCount=3:i" -d "LoadSlaveCount=4:i" -d "LoadThreadPerSlaveCount=1:i" -d "LoadRequestPerSlaveCount=1:i"
+```
+
+### Scenario 
+
+``` sh
+bloader run -f flow.yaml -d "Case=sc1:s" -d "ThreadPerSlaveCount=25:i" -d "RequestPerSlaveCount=3000:i" -d "SlaveCount=4:i" -d "Limit=30:i"
+```
+
+### Scenario (No work)
 
 | Scenario                     | Link                              |
 |------------------------------|-----------------------------------|

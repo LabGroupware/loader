@@ -21,6 +21,12 @@ step:
           thread_only_values:
             - key: "SlaveCount"
               value: {{ .Values.SlaveCount }}
+          actions:
+            - id: "disconnect"
+              type: "slaveConnect:disconnect"
+              on:
+                - event: "sys:terminated"
+                  flow: "main"
     - id: "main"
       type: flow
       mkdir: false
@@ -141,7 +147,7 @@ step:
                 - key: "SlaveCount"
                   value: {{ .Values.SlaveCount }}
                 - key: "SleepDuration"
-                  value: "30s"
+                  value: "50s"
         - id: "createFileObject"
           type: flow
           mkdir: false

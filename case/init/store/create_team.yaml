@@ -12,9 +12,11 @@ data:
         - list_per_thread:
         {{- range $index, $element := until $.ThreadValues.RequestPerSlaveCount }}
         {{- $randOnName := randInt 5 10 }}
+        {{- $randOnDescription := randInt 10 30 }}
         {{- $fixedIter := mod $iter $.ThreadValues.RecordCount }}
           - id: {{ $iter }}
             name: {{ randAlpha $randOnName | title }}
+            description: "{{ randAlpha $randOnDescription }}"
             organizationId: {{ (index $organizationData $fixedIter).organizationId }}
             userIds: 
               - {{ (index $userData $fixedIter).userId }}

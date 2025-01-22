@@ -25,6 +25,7 @@ requests:
     body:
       name: "{{ .name }}"
       organizationId: "{{ .organizationId }}"
+      description: "{{ .description }}"
       userIds: 
       {{- range .userIds }}
         - "{{ . }}"
