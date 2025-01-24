@@ -18,11 +18,11 @@ requests:
     await_prev_response: false
     headers: {}
     query_param: {}
+{{- if hasKey $.Dynamic "RequestLoopCount" }}
+{{- with index .list_per_thread $.Dynamic.RequestLoopCount }}
     path_variables:
       userPreferenceId: "{{ .userPreferenceId }}"
     body_type: json
-{{- if hasKey $.Dynamic "RequestLoopCount" }}
-{{- with index .list_per_thread $.Dynamic.RequestLoopCount }}
     body:
       timezone: "{{ .timezone }}"
       theme: "{{ .theme }}"

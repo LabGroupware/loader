@@ -4,17 +4,21 @@ data:
     value:
       - id: "slave1"
         uuid: {{ uuidv4 }}
-        address: "3.18.67.236"
+        address: "3.148.80.245"
         port: 50051
       - id: "slave2"
         uuid: {{ uuidv4 }}
-        address: "3.12.121.206"
+        address: "3.136.65.18"
         port: 50051
       - id: "slave3"
         uuid: {{ uuidv4 }}
-        address: "3.137.126.1"
+        address: "3.128.42.241"
         port: 50051
       - id: "slave4"
         uuid: {{ uuidv4 }}
-        address: "3.13.127.74"
+        address: "3.13.106.154"
+        port: 50051
+      - id: "slave5"
+        uuid: {{ uuidv4 }}
+        address: "3.134.134.189"
         port: 50051

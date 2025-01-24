@@ -49,7 +49,7 @@ step:
             - key: "MetricsInterval"
               value: "5s"
             - key: "MetricsBreakTime"
-              value: "10m"
+              value: "90m"
           thread_only_values: []
         - id: "request"
           type: file

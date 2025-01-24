@@ -18,11 +18,11 @@ requests:
     await_prev_response: false
     headers: {}
     query_param: {}
-    path_variables:
-      teamId: "{{ .teamId }}"
     body_type: json
 {{- if hasKey $.Dynamic "RequestLoopCount" }}
 {{- with index .list_per_thread $.Dynamic.RequestLoopCount }}
+    path_variables:
+      teamId: "{{ .teamId }}"
     body:
       userIds: 
       {{- range .userIds }}

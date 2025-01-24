@@ -12,6 +12,7 @@ requests:
     headers: {}
     query_param:
       with_count: "true"
+      pagination: "offset"
     path_variables: {}
     body_type: json
     body: {}
